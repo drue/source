@@ -9,11 +9,13 @@ This Chef cookbook provides a resource for building software from source.
 Build/Install source code.  By default, `source_build` works with GNU autoconf style builds (`./configure;make;make install`) but it can be configured to build almost any software package.
 
 ### Actions
-`source_build` has several actions that it executes the following sequence: `unpack`, `[patch]`, `configure`, `build`, and `install`.  Each action executes the actions that precede it unless you supply the `:skip` attribute.  The default action is `install`.  i.e. if you want to unpack, configure, and build but not install you would specify `build` for the `:action` attribute.  The `patch` action is only executed if you supply the `:patches` attribute and by default happens after `unpack` and before `configure`.
+`source_build` has several actions that it executes in the following sequence: `:unpack`, `[:patch]`, `:configure`, `:build`, and `:install`.  Each action executes the actions that precede it unless you supply the `skip` attribute.  The default action is `install`.  i.e. if you want to unpack, configure, and build but not install you would specify `build` for the `action` attribute.  The `patch` action is only executed if you supply the `patches` attribute and by default happens after `unpack` and before `configure`.
 
 The `name` attribute is used as the `cwd` for each action, except `:unpack`.  `:unpack` happens in the basename of the `name` attribute unless you set `unpack_in`.
 
-* `:unpack` unpack the archive specified by the `:archive` attribute.  The `cwd` of the unpack action is the basename of the `:name` attribute of the resource unless the `unpack_in` attribute is set.
+After each action, `source_build` touches a file called `_<action>` in the `name` path to provide idepotence. i.e. `:unpack` touches a file called `_unpack`.  `source_build` will skip an action if this file is present in the `name` path.  To get `source_build` to perform an action again, you must delete that file.
+
+* `:unpack` unpack the archive specified by the `:archive` attribute.  The `cwd` of the unpack action is the `basename` of the `:name` attribute of the resource unless the `unpack_in` attribute is set.
 
 * `:patch` apply the patches listed in the `patches` attribute.  By default this happens after `:unpack` but you can change that with the `patch_after` attribute.
 
@@ -39,9 +41,9 @@ The `name` attribute is used as the `cwd` for each action, except `:unpack`.  `:
 
 * `install_extras` extra stuff to put after the `install` command.  Default is an empty string.
 
-* `environment` hash of environment variables to set for the build actions.
+* `environment` hash of environment variables to set for all actions.
 
-* `unpack_in` use this path as the `cwd` of the unpack command.  By default, `source_build` will build in the `basename` of the `name` attribute.  Some software packages are not configured/build/installed from the top level directory inside the archive so the `basename` of the `name` attribute is not a valid path prior to unpacking the archive.  In that case you must set this attribute.
+* `unpack_in` use this path as the `cwd` of the unpack command.  By default, `source_build` will build in the `basename` of the `name` attribute.  Some software packages are not configured/built/installed from the top level directory inside the archive so the `basename` of the `name` attribute is not a valid path prior to unpacking the archive.  In that case you must set this attribute.
 
 * `patches` a list of paths to patches to apply.
 
