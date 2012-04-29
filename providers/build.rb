@@ -28,7 +28,7 @@ end
 
 def patch
   if !new_resource.patches.empty? then
-    patched = ::File.join(new_resource.name, "_patched")
+    patched = ::File.join(new_resource.name, "_patch")
 
     new_resource.patches.each do |patch|
       bash "patch #{patch}" do
@@ -47,7 +47,7 @@ def unpack
     return
   end
   arcpath = Pathname.new(new_resource.archive)
-  unpacked = ::File.join(new_resource.name, "_unpacked")
+  unpacked = ::File.join(new_resource.name, "_unpack")
 
   # tar operation
   if new_resource.archive.end_with?('gz') then
