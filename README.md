@@ -13,7 +13,7 @@ Build/Install source code.  By default, `source_build` works with GNU autoconf s
 
 The `name` attribute is used as the `cwd` for each action, except `:unpack`.  `:unpack` happens in the basename of the `name` attribute unless you set `unpack_in`.
 
-After each action, `source_build` touches a file called `_<action>` in the `name` path to provide idepotence. i.e. `:unpack` touches a file called `_unpack`.  `source_build` will skip an action if this file is present in the `name` path.  To get `source_build` to perform an action again, you must delete that file.
+After each action, `source_build` touches a file called `_<action>` in the `name` path to provide idempotence. i.e. `:unpack` touches a file called `_unpack`.  `source_build` will skip an action if this file is present in the `name` path.  To get `source_build` to perform an action again, you must delete that file.
 
 * `:unpack` unpack the archive specified by the `:archive` attribute.  The `cwd` of the unpack action is the `basename` of the `:name` attribute of the resource unless the `unpack_in` attribute is set.
 
