@@ -9,7 +9,7 @@ This Chef cookbook provides a resource for building software from source.
 Build/Install source code.  By default, `source_build` works with GNU autoconf style builds (`./configure;make;make install`) but it can be configured to build almost any software package.
 
 ### Actions
-`source_build` has several actions that it executes in the following sequence: `:unpack`, `[:patch]`, `:configure`, `:build`, and `:install`.  Each action executes the actions that precede it unless you supply the `skip` attribute.  The default action is `install`.  i.e. if you want to unpack, configure, and build but not install you would specify `build` for the `action` attribute.  The `patch` action is only executed if you supply the `patches` attribute and by default happens after `unpack` and before `configure`.
+`source_build` has several actions that it executes in the following sequence: `:unpack`, `[:patch]`, `:configure`, `:build`, and `:install`.  Each action executes the actions that precede it unless you supply the `skip` attribute.  The default action is `install`.  i.e. if you want to unpack, configure, and build but not install you would specify `:build` for the `action` attribute.  The `:patch` action is only executed if you supply the `patches` attribute and by default happens after `unpack` and before `configure`.
 
 The `name` attribute is used as the `cwd` for each action, except `:unpack`.  `:unpack` happens in the basename of the `name` attribute unless you set `unpack_in`.
 
